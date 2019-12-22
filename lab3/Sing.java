@@ -26,8 +26,4 @@ public class Sing implements Skill {
             user.addSkill(this);
         }
     }
-
-    public void removeUser(Creature user) {
-        users.remove(user);
-    }
 }

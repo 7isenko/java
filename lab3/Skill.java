@@ -6,6 +6,4 @@ interface Skill {
     String getName();
     ArrayList<Creature> getUsers();
     void addUser(Creature user);
-    void removeUser(Creature user);
-
 }
