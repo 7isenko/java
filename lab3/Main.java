@@ -23,7 +23,7 @@ public class Main {
         Item coffee = new Item("coffee");
         basket.setCarrier(julius);
         coffee.setCarrier(freken);
-        System.out.println("The World is done");
+        System.out.println("The World is done\n");
 
         karlson.speak();
         freken.setScared();
@@ -38,5 +38,7 @@ public class Main {
         Sing rap = new Sing("rap");
         freken.addSkill(rap);
         freken.useSkill(rap);
+        System.out.println(freken.toString());
+        System.out.println(bun.toString());
     }
 }

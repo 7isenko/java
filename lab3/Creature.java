@@ -82,10 +82,28 @@ public abstract class Creature implements ICreature {
 
     @Override
     public void look(Creature creature) {
-        System.out.println(this.getName() + " is looked at " + creature.getName());
+        System.out.println(this.name + " is looked at " + creature.getName());
     }
 
+    @Override
     public void react() {
-        System.out.println(this.getName() + " is looking on you");
+        System.out.println(this.name + " is looking on you");
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object.getClass() == getClass() && object.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + " " + getName() + " " + hashCode();
     }
 }
+
+

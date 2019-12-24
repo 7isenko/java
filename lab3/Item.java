@@ -29,13 +29,13 @@ public class Item {
     void setCarrier(Creature carrier) {
         if (this.carrier != null) {
             this.carrier.removeCarry(this);
-            for (Item i: this.storing) {
+            for (Item i : this.storing) {
                 this.carrier.removeCarry(i);
             }
         }
         this.carrier = carrier;
         carrier.addCarry(this);
-        for (Item i: this.storing) {
+        for (Item i : this.storing) {
             i.carrier = carrier;
             carrier.addCarry(i);
         }
@@ -47,5 +47,21 @@ public class Item {
 
     boolean isCarried() {
         return this.getCarrier() != null;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object.getClass() == this.getClass() && object.hashCode() == this.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + " " + name + " " + hashCode();
+
     }
 }
