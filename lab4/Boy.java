@@ -1,9 +1,8 @@
 package lab3;
 
 class Boy extends Human {
-    {
-        super.setName("Boy");
-        super.setAge(9);
+    public Boy(int age, String name) {
+        super(age, name);
         System.out.println(this.getName() + " is here");
     }
 }

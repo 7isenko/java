@@ -1,12 +1,12 @@
 package lab3;
 
-class Freken extends Human {
-    {
-        super.setName("Freken Bok");
-        super.setAge(40);
+class Woman extends Human {
+    boolean scared = false;
+
+    public Woman(int age, String name) {
+        super(age, name);
         System.out.println(this.getName() + " is here");
     }
-    boolean scared = false;
 
     public boolean isScared() {
         return scared;

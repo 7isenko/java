@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class Sing implements Skill {
     private ArrayList<Creature> users = new ArrayList<Creature>();
-    private String name;
+    private Name name;
 
-    Sing(String name) {
+    Sing(Name name) {
         this.name = name;
     }
 
     @Override
     public String getName() {
-        return name;
+        return name.toString();
     }
 
     @Override
@@ -25,5 +25,8 @@ public class Sing implements Skill {
             users.add(user);
             user.addSkill(this);
         }
+    }
+    public static enum Name {
+        rap, scream, hip_hop;
     }
 }

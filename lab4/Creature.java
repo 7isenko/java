@@ -8,6 +8,11 @@ public abstract class Creature implements ICreature {
     private ArrayList<Skill> skills = new ArrayList<>();
     private ArrayList<Item> carry = new ArrayList<>();
 
+    public Creature(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
+
     public int getAge() {
         return age;
     }
@@ -42,7 +47,7 @@ public abstract class Creature implements ICreature {
     void useSkill(Skill skill) {
         if (this.skills.contains(skill)) {
             System.out.println(this.name + " is " + skill.getName() + "ing");
-        }
+        } else throw new NoSkill();
     }
 
     void addSkill(Skill skill) {
@@ -82,7 +87,7 @@ public abstract class Creature implements ICreature {
 
     @Override
     public void look(Creature creature) {
-        System.out.println(this.name + " is looked at " + creature.getName());
+        System.out.println(this.name + " looked at " + creature.getName());
     }
 
     @Override
