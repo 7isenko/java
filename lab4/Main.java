@@ -13,34 +13,10 @@ package lab3;
 public class Main {
 
     public static void main(String[] args) {
-        Engineer karlson = new Engineer(32, "Karlson");
-        Woman freken = new Woman(40, "Freken Bok");
-        Boy boy = new Boy(9, "Eric");
-        Swede julius = new Swede(42, "Julius");
-        Human josh = new Human(22, "Josh") {
-            // local class inside an anonymous class
-            class Meet {
-                String meet;
-
-                Meet(String meet) {
-                    this.meet = meet;
-                }
-
-                private void meeting() {
-                    System.out.println(meet);
-                }
-            }
-
-            Meet meet = new Meet("Josh appeared");
-
-            void meeting(Meet meet) {
-                meet.meeting();
-            }
-
-            {
-                meeting(meet);  
-            }
-        };
+        Karlson karlson = new Karlson();
+        Freken freken = new Freken();
+        Boy boy = new Boy();
+        Julius julius = new Julius();
         Item bun = new Item("bun");
         Item basket = new Item("basket");
         bun.putInto(basket);
@@ -57,14 +33,12 @@ public class Main {
         freken.give(julius, coffee);
         karlson.take(basket);
         julius.take(bun);
+        julius.react();
 
-        Sing rap = new Sing(Sing.Name.rap);
+        Sing rap = new Sing("rap");
         freken.addSkill(rap);
         freken.useSkill(rap);
         System.out.println(freken.toString());
         System.out.println(bun.toString());
-
-        karlson.look(josh);
-        karlson.useSkill(rap);
     }
 }

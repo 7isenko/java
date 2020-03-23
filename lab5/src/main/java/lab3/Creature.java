@@ -1,15 +1,12 @@
 package lab3;
 
-import lab3.exceptions.NoSkill;
-import lab3.skills.Skill;
-
 import java.util.ArrayList;
 
 public abstract class Creature implements ICreature {
     private int age;
     private String name;
-    private ArrayList<Skill> skills = new ArrayList<Skill>();
-    private ArrayList<Item> carry = new ArrayList<Item>();
+    private ArrayList<Skill> skills = new ArrayList<>();
+    private ArrayList<Item> carry = new ArrayList<>();
 
     public Integer getAge() {
         return age;
@@ -35,23 +32,16 @@ public abstract class Creature implements ICreature {
         this.skills = skills;
     }
 
-    boolean hasSkill(String skill) {
+    boolean hasSkill(Skill skill) {
         for (Skill i : this.skills) {
-            if (i.getName().equals(skill)) return true;
+            if (i.equals(skill)) return true;
         }
         return false;
-    }
-
-    public void useSkill(Skill skill) {
-        if (this.skills.contains(skill)) {
-            System.out.println(this.name + " is " + skill.getName() + "ing");
-        } else throw new NoSkill();
     }
 
     public void addSkill(Skill skill) {
         if (!skills.contains(skill)) {
             skills.add(skill);
-            skill.addUser(this);
         }
     }
 
@@ -69,15 +59,15 @@ public abstract class Creature implements ICreature {
 
     public void give(Creature creature, Item item) {
         item.setCarrier(creature);
-        System.out.println(this.getName() + " gives " + item.getName() + " to " + creature.getName());
+        System.out.println(this.getName() + " gives " + item + " to " + creature.getName());
     }
 
     public void take(Item item) {
         if (item.isCarried()) {
-            System.out.println(this.getName() + " tried to take the " + item.getName() + " but failed");
+            System.out.println(this.getName() + " tried to take the " + item + " but failed");
         } else {
             item.setCarrier(this);
-            System.out.println(this.getName() + " took the " + item.getName());
+            System.out.println(this.getName() + " took the " + item);
         }
     }
 

@@ -6,10 +6,10 @@ public class Engineer extends Human {
     public void take(Item item) {
         if (item.isCarried()) {
             item.setCarrier(this);
-            System.out.println(this.getName() + " stole the " + item.getName() + "\nbugaga");
+            System.out.println(this.getName() + " stole the " + item + "\nbugaga");
         } else {
             item.setCarrier(this);
-            System.out.println(this.getName() + " took the " + item.getName());
+            System.out.println(this.getName() + " took the " + item);
         }
     }
 }

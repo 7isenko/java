@@ -2,6 +2,7 @@ import lab3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
@@ -66,9 +67,9 @@ public class CollectionManager {
             collection.add(reader.parseHuman(obj));
             System.out.println("You added an object to your collection. Print \"show\" to check it");
         } catch (JSONException e) {
-            System.out.println("That was wrong JSON");
+            System.out.println("That was invalid JSON");
         } catch (NullPointerException e) {
-            System.out.println("example: {\"name\":\"Bill\",\"age\":\"42\"}");
+            System.out.println("example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}");
         }
     }
 
@@ -102,6 +103,8 @@ public class CollectionManager {
             System.out.println("You removed an object from collection. Print \"show\" to check it");
         } catch (JSONException e) {
             System.out.println("It is not a JSON");
+        } catch (NullPointerException e) {
+            System.out.println("example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}");
         }
     }
 
@@ -110,7 +113,10 @@ public class CollectionManager {
      */
     public void show() {
         collection.forEach((human -> {
-            System.out.println("Name: " + human.getName() + "\nAge: " + human.getAge() + "\nSkills: " + human.getSkills() + "\nCarry: " + human.getCarry());
+            System.out.println("Name: " + human.getName() + "\nAge: " + human.getAge());
+            if (human.getSkills().size() != 0) System.out.println("Skills: " + human.getSkills());
+            if (human.getCarry().size() != 0) System.out.println("Carry: " + human.getCarry());
+            System.out.println("_________");
         }));
         try {
             collection.first();
@@ -119,6 +125,13 @@ public class CollectionManager {
         }
     }
 
+    /**
+     * Clear the collection
+     */
+    public void clear() {
+        collection = new TreeSet<>();
+        System.out.println("Collection has been nullified");
+    }
 
     protected TreeSet<Human> get() {
         return collection;
@@ -132,6 +145,10 @@ public class CollectionManager {
      * Method, which is used for small tests
      */
     protected void test() {
-        collection.add(new Human("Amanda", 80));
+        ArrayList<Item> carry = new ArrayList<>();
+        carry.add(Item.BOTTLE);
+        ArrayList<Skill> skills = new ArrayList<>();
+        skills.add(Skill.SING);
+        collection.add(new Human("Amanda", 26, skills, carry));
     }
 }

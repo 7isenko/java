@@ -24,17 +24,19 @@ public class JSONWriter {
     }
 
     public String writeToFile() {
+        boolean created = new File(fileAddress.substring(0, fileAddress.lastIndexOf('/'))).mkdirs();
+        if (created) System.out.println("Created folders for " + fileAddress);
         try {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileAddress));
             byte[] buffer = humanList.toString().getBytes();
             out.write(buffer, 0, buffer.length);
             out.close();
+            return "File saved in " + fileAddress;
         } catch (FileNotFoundException e) {
             return "Can't find the file: " + fileAddress;
         } catch (IOException e) {
             return "Output error with file: " + fileAddress;
         }
-        return "File saved in " + fileAddress;
     }
 
     public String getFileAddress() {

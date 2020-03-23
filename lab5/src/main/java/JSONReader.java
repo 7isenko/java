@@ -1,6 +1,6 @@
 import lab3.Human;
 import lab3.Item;
-import lab3.skills.Skill;
+import lab3.Skill;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +52,7 @@ public class JSONReader {
         return collection;
     }
 
-    public Human parseHuman(JSONObject jsonHuman){
+    public Human parseHuman(JSONObject jsonHuman) {
         Human human = new Human();
 
         try {
@@ -69,7 +69,7 @@ public class JSONReader {
                 human.setCarry(new ArrayList<Item>());
             }
         } catch (Exception e) {
-            System.out.println("Name and age are required");
+            System.out.println("You put wrong values");
         }
 
         return human;
@@ -79,7 +79,7 @@ public class JSONReader {
         ArrayList<Skill> arrayList = new ArrayList<Skill>();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
-                arrayList.add((Skill) jsonArray.get(i));
+                arrayList.add(Skill.valueOf(((String)jsonArray.get(i)).toUpperCase()));
             }
         }
         return arrayList;
@@ -89,7 +89,7 @@ public class JSONReader {
         ArrayList<Item> arrayList = new ArrayList<Item>();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
-                arrayList.add((Item) jsonArray.get(i));
+                arrayList.add(Item.valueOf(((String)jsonArray.get(i)).toUpperCase()));
             }
         }
         return arrayList;
