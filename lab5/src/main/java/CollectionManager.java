@@ -64,8 +64,8 @@ public class CollectionManager {
         JSONObject obj;
         try {
             obj = new JSONObject(objInString);
-            collection.add(reader.parseHuman(obj));
-            System.out.println("You added an object to your collection. Print \"show\" to check it");
+            if (collection.add(reader.parseHuman(obj)))
+                System.out.println("You added an object to your collection. Print \"show\" to check it");
         } catch (JSONException e) {
             System.out.println("That was invalid JSON");
         } catch (NullPointerException e) {

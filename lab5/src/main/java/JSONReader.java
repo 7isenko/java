@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 public class JSONReader {
@@ -70,6 +71,10 @@ public class JSONReader {
             }
         } catch (Exception e) {
             System.out.println("You put wrong values");
+            System.out.println("Name and age are required");
+            System.out.println("List of able skills: " + Arrays.toString(Skill.values()));
+            System.out.println("List of able items: " + Arrays.toString(Item.values()));
+            return null;
         }
 
         return human;

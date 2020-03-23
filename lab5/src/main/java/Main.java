@@ -13,7 +13,6 @@ public class Main {
         collection.setOnLoad();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-        collection.test();
         String command = "";
         String[] buff;
         showMenu();
@@ -51,8 +50,12 @@ public class Main {
 
     public static void showMenu() {
         System.out.println("Enter show, load, info, save, add {element}, import {path}, remove {element}, clear or \"stop\" to exit \nelement - json, example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]} \npath - string, example: ./collections/students.json");
+        showAbleEnums();
+        System.out.println("Name and age are required");
+    }
+
+    public static void showAbleEnums(){
         System.out.println("List of able skills: " + Arrays.toString(Skill.values()));
         System.out.println("List of able items: " + Arrays.toString(Item.values()));
-        System.out.println("Name and age are required");
     }
 }
