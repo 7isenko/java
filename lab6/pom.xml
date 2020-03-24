@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>lab6</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>super-laba.100500</version>
     <build>
         <plugins>
             <plugin>
