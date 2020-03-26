@@ -13,12 +13,12 @@ import java.util.TreeSet;
 
 public class JSONReader {
     private JSONArray fileJSONContent;
-    private String fileContent = "";
     private String fileAddress = "./collections/default.json";
 
 
     public String readFile() {
         fileJSONContent = null;
+        String fileContent = "";
         try {
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileAddress));
             int c;
@@ -106,7 +106,7 @@ public class JSONReader {
 
     public void setFileAddress(String fileAddress) {
         this.fileAddress = fileAddress;
-        readFile();
+        System.out.println(readFile());;
     }
 
     public JSONArray getFileJSONContent() {

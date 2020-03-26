@@ -1,4 +1,6 @@
-import lab3.Human;
+package lab5;
+
+import lab5.lab3.Human;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +19,7 @@ public class JSONWriter {
         JSONObject human = new JSONObject();
         human.put("name", h.getName());
         human.put("age", h.getAge());
-        human.put("skills", h.getSkills());
+        human.put("skills", h.getPlaces());
         human.put("carry", h.getCarry());
 
         humanList.put(human);

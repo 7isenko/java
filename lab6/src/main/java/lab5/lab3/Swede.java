@@ -1,6 +1,6 @@
-package lab3;
+package lab5.lab3;
 
-import lab3.exceptions.CoffeeIsHot;
+import lab5.lab3.exceptions.CoffeeIsHot;
 
 import java.util.ArrayList;
 

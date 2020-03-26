@@ -1,11 +1,11 @@
-package lab3;
+package lab5.lab3;
 
 import java.util.ArrayList;
 
 public abstract class Creature implements ICreature {
     private int age;
     private String name;
-    private ArrayList<Skill> skills = new ArrayList<>();
+    private ArrayList<Place> places = new ArrayList<>();
     private ArrayList<Item> carry = new ArrayList<>();
 
     public Integer getAge() {
@@ -24,26 +24,14 @@ public abstract class Creature implements ICreature {
         this.name = name;
     }
 
-    public ArrayList<Skill> getSkills() {
-        return skills;
+    public ArrayList<Place> getPlaces() {
+        return places;
     }
 
-    public void setSkills(ArrayList<Skill> skills) {
-        this.skills = skills;
+    public void setPlaces(ArrayList<Place> places) {
+        this.places = places;
     }
 
-    boolean hasSkill(Skill skill) {
-        for (Skill i : this.skills) {
-            if (i.equals(skill)) return true;
-        }
-        return false;
-    }
-
-    public void addSkill(Skill skill) {
-        if (!skills.contains(skill)) {
-            skills.add(skill);
-        }
-    }
 
     public ArrayList<Item> getCarry() {
         return carry;

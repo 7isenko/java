@@ -1,11 +1,10 @@
-import lab3.*;
+package lab5;
+
+import lab5.lab3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Semisenko Maxim
@@ -19,6 +18,9 @@ public class CollectionManager {
     /**
      * Auto method, loads elements from file on the start
      */
+    public void setName(String name) {
+        reader.setFileAddress("./collections/"+ name +".json");
+    }
     protected void setOnLoad() {
         try {
             System.out.println(reader.readFile());
@@ -31,28 +33,28 @@ public class CollectionManager {
     /**
      * Update collection from file
      */
-    public void load() {
+    public String load() {
         reader.readFile();
-        System.out.println("Collection was updated from your file");
+        return "Collection was updated from your file";
     }
 
     /**
      * Save collection to file
      */
-    public void save() {
+    public String save() {
         writer.fill(collection);
         writer.writeToFile();
-        System.out.println("Collection has been saved to " + writer.getFileAddress());
+        return "Collection has been saved to " + writer.getFileAddress();
     }
 
     /**
      * Print an information about collection
      * (type, initialization date, number of elements, etc.)
      */
-    public void info() {
-        System.out.println(date.toString());
-        System.out.println("Type of collection is " + collection.getClass().getName());
-        System.out.println("Size of collection is " + collection.size());
+    public String info() {
+        return date.toString() +
+                "\nType of collection is " + collection.getClass().getName() +
+                "\nSize of collection is " + collection.size();
     }
 
     /**
@@ -60,17 +62,18 @@ public class CollectionManager {
      *
      * @param objInString - element in string JSON format
      */
-    public void add(String objInString) {
+    public String add(String objInString) {
         JSONObject obj;
         try {
             obj = new JSONObject(objInString);
             if (collection.add(reader.parseHuman(obj)))
-                System.out.println("You added an object to your collection. Print \"show\" to check it");
+                return "You added an object to your collection. Print \"show\" to check it";
         } catch (JSONException e) {
-            System.out.println("That was invalid JSON");
+            return "That was invalid JSON";
         } catch (NullPointerException e) {
-            System.out.println("example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}");
+            return "example: {\"name\":\"Bill\",\"age\":\"42\",\"place\":[\"zoo\"],\"carry\":[\"stick\"]}";
         }
+        return "Unknown trouble in add method";
     }
 
     /**
@@ -78,16 +81,16 @@ public class CollectionManager {
      *
      * @param path - string path to a file
      */
-    public void doImport(String path) {
+    public String doImport(String path) {
         if (!path.substring(path.lastIndexOf('.') + 1).equals("json"))
-            System.out.println("It is not .json format file");
+            return "It is not .json format file";
         else
             try {
                 reader.setFileAddress(path);
                 reader.getHumanCollection();
-                System.out.println("Collection was successfully imported. Print \"show\" to check it");
+                return "Collection was successfully imported. Print \"show\" to check it";
             } catch (NullPointerException e) {
-                System.out.println("Wrong file address: " + path);
+                return "Wrong file address: " + path;
             }
     }
 
@@ -96,41 +99,43 @@ public class CollectionManager {
      *
      * @param objInString - element in string JSON format
      */
-    public void remove(String objInString) {
+    public String remove(String objInString) {
         try {
             JSONObject obj = new JSONObject(objInString);
             collection.remove(reader.parseHuman(obj)); // check return
-            System.out.println("You removed an object from collection. Print \"show\" to check it");
+            return "You removed an object from collection. Print \"show\" to check it";
         } catch (JSONException e) {
-            System.out.println("It is not a JSON");
+            return "It is not a JSON";
         } catch (NullPointerException e) {
-            System.out.println("example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}");
+            return "example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}";
         }
     }
 
     /**
      * Print the collection
      */
-    public void show() {
-        collection.forEach((human -> {
-            System.out.println("Name: " + human.getName() + "\nAge: " + human.getAge());
-            if (human.getSkills().size() != 0) System.out.println("Skills: " + human.getSkills());
-            if (human.getCarry().size() != 0) System.out.println("Carry: " + human.getCarry());
-            System.out.println("_________");
-        }));
+    public String show() {
+        StringBuffer answ = new StringBuffer();
+        for (Human human : collection) {
+            answ.append("Name: ").append(human.getName()).append("\nAge: ").append(human.getAge());
+            if (human.getPlaces().size() != 0) answ.append("\nPlace: ").append(human.getPlaces());
+            if (human.getCarry().size() != 0) answ.append("\nCarry: ").append(human.getCarry());
+            answ.append("\n_________\n");
+        }
         try {
             collection.first();
         } catch (NoSuchElementException e) {
-            System.out.println("Collection is empty");
+            answ.append("Collection is empty");
         }
+        return answ.toString();
     }
 
     /**
      * Clear the collection
      */
-    public void clear() {
+    public String clear() {
         collection = new TreeSet<>();
-        System.out.println("Collection has been nullified");
+        return "Collection has been nullified";
     }
 
     protected TreeSet<Human> get() {
@@ -146,9 +151,9 @@ public class CollectionManager {
      */
     protected void test() {
         ArrayList<Item> carry = new ArrayList<>();
-        carry.add(Item.BOTTLE);
-        ArrayList<Skill> skills = new ArrayList<>();
-        skills.add(Skill.SING);
-        collection.add(new Human("Amanda", 26, skills, carry));
+        carry.add(Item.values()[new Random().nextInt(Item.values().length)]);
+        ArrayList<Place> places = new ArrayList<>();
+        places.add(Place.values()[new Random().nextInt(Place.values().length)]);
+        collection.add(new Human("Amanda", 26, places, carry));
     }
 }

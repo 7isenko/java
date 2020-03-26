@@ -84,7 +84,7 @@ public class CollectionManager {
         else
             try {
                 reader.setFileAddress(path);
-                reader.getHumanCollection();
+                collection.addAll(reader.getHumanCollection());
                 System.out.println("Collection was successfully imported. Print \"show\" to check it");
             } catch (NullPointerException e) {
                 System.out.println("Wrong file address: " + path);

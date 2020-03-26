@@ -1,6 +1,8 @@
-import lab3.Human;
-import lab3.Item;
-import lab3.Skill;
+package lab5;
+
+import lab5.lab3.Human;
+import lab5.lab3.Item;
+import lab5.lab3.Place;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,9 +62,9 @@ public class JSONReader {
             human.setName(jsonHuman.getString("name"));
             human.setAge(jsonHuman.getInt("age"));
             try {
-                human.setSkills(jsonToALSConvert((JSONArray) jsonHuman.get("skills")));
+                human.setPlaces(jsonToALSConvert((JSONArray) jsonHuman.get("place")));
             } catch (JSONException e) {
-                human.setSkills(new ArrayList<Skill>());
+                human.setPlaces(new ArrayList<Place>()); //TODO: Make one enum
             }
             try {
                 human.setCarry(jsonToALIConvert((JSONArray) jsonHuman.get("carry")));
@@ -72,7 +74,7 @@ public class JSONReader {
         } catch (Exception e) {
             System.out.println("You put wrong values");
             System.out.println("Name and age are required");
-            System.out.println("List of able skills: " + Arrays.toString(Skill.values()));
+            System.out.println("List of able places: " + Arrays.toString(Place.values()));
             System.out.println("List of able items: " + Arrays.toString(Item.values()));
             return null;
         }
@@ -80,11 +82,11 @@ public class JSONReader {
         return human;
     }
 
-    public ArrayList<Skill> jsonToALSConvert(JSONArray jsonArray) {
-        ArrayList<Skill> arrayList = new ArrayList<Skill>();
+    public ArrayList<Place> jsonToALSConvert(JSONArray jsonArray) {
+        ArrayList<Place> arrayList = new ArrayList<Place>();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
-                arrayList.add(Skill.valueOf(((String)jsonArray.get(i)).toUpperCase()));
+                arrayList.add(Place.valueOf(((String)jsonArray.get(i)).toUpperCase()));
             }
         }
         return arrayList;

@@ -1,7 +1,4 @@
-package lab3;
-
-import lab3.Creature;
-import lab3.Item;
+package lab5.lab3;
 
 public interface ICreature {
 
