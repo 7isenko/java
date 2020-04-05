@@ -1,7 +1,11 @@
 import lab5.SHA1Encoder;
 import lab5.lab3.Human;
+import lab5.lab3.Item;
+import lab5.lab3.Place;
 
 import java.sql.*;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class DBRepository {
@@ -50,15 +54,16 @@ public class DBRepository {
     }
 
 
-    public boolean addHuman(Human human) {
+    public boolean addHuman(Human human, String owner) {
         try {
-            String sql = "insert into humanlist (name, age, date, place, carry) VALUES (?,?,?,?,?)";
+            String sql = "insert into humanlist (name, age, date, place, carry, owner) VALUES (?,?,?,?,?,?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, human.getName());
             st.setInt(2, human.getAge());
             st.setString(3, human.getDate().toString());
             st.setString(4, human.getPlace().toString());
             st.setString(5, human.getCarry().toString());
+            st.setString(6, owner);
             st.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -66,19 +71,62 @@ public class DBRepository {
             return false;
         }
     }
-
-    public void addHumans(TreeSet<Human> humans) {
-        humans.forEach(human -> addHuman(human));
+    public ArrayList<Human> getHumansByUser(String email) {
+        ArrayList<Human> humans = new ArrayList<>();
+        try {
+            String sql = "select * from humanlist where owner like '" + email + "'";
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                OffsetDateTime date = OffsetDateTime.parse(rs.getString("date"));
+                Place place = Place.valueOf(rs.getString("place"));
+                ArrayList<Item> carry = (ArrayList<Item>) rs.getArray("carry");
+                humans.add(new Human(name,age,date,place,carry,email));
+            }
+            return humans;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
-    public boolean removeHuman(Human human) {
+    public ArrayList<Human> getAllHumans() {
+        ArrayList<Human> humans = new ArrayList<>();
         try {
-            String sql = "delete from humanlist where name=? and age=? and place=? and carry=?"; // I ignore date, cuz it makes some problems
+            String sql = "select * from humanlist";
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                OffsetDateTime date = OffsetDateTime.parse(rs.getString("date"));
+                Place place = Place.valueOf(rs.getString("place"));
+                ArrayList<Item> carry = (ArrayList<Item>) rs.getArray("carry");
+                String owner = rs.getString("owner");
+                humans.add(new Human(name,age,date,place,carry, owner));
+            }
+            return humans;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public void addHumans(TreeSet<Human> humans, String owner) {
+        humans.forEach(human -> addHuman(human, owner));
+    }
+
+    public boolean removeHuman(Human human, String owner) {
+        try {
+            String sql = "delete from humanlist where name=? and age=? and place=? and carry=? and owner=?"; // I ignore date, cuz it makes some problems
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, human.getName());
             st.setInt(2, human.getAge());
             st.setString(3, human.getPlace().toString());
             st.setString(4, human.getCarry().toString());
+            st.setString(5, owner);
             st.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -132,7 +180,8 @@ public class DBRepository {
                     "    age int,\n" +
                     "    date varchar(255),\n" +
                     "    place varchar(255),\n" +
-                    "    carry varchar(255)\n" +
+                    "    carry varchar(255),\n" +
+                    "    owner varchar(255)\n" +
                     ");";
             st2.executeUpdate(sql2);
             System.out.println("DB initiated");

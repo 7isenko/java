@@ -1,5 +1,4 @@
 import lab5.Command;
-import lab5.CommandParser;
 import lab5.SHA1Encoder;
 
 import java.io.*;
@@ -9,7 +8,7 @@ import java.util.LinkedList;
 
 public class Server {
 
-    public static final int PORT = 10357;
+    public static final int PORT = 24220;
     public static LinkedList<ServerCommand> serverList = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
@@ -45,49 +44,43 @@ public class Server {
 
         @Override
         public void run() {
-
+            DBRepository db = new DBRepository();
             try {
-                String name = in.readUTF();
-                CommandParser parser = new CommandParser(out, name);
-                DBRepository db = new DBRepository();
-                try {
-                    String email;
-                    send("Print your email:");
-                    email = ((Command) in.readObject()).getName();
-                    if (db.login(email, "empty")) {
-                        send("You were registered and logged in. Password has been sent to your email");
+                String email;
+                send("Print your email:");
+                email = ((Command) in.readObject()).getName();
+
+                if (db.login(email, "empty")) {
+                    send("You were registered and logged in. Password has been sent to your email");
+                } else {
+                    send("Print your password:");
+                    String password = ((Command) in.readObject()).getName();
+                    if (db.login(email, SHA1Encoder.encryptPassword(password))) {
+                        send("Successful login");
                     } else {
-                        send("Print your password:");
-                        String password = ((Command) in.readObject()).getName();
+                        send("Bad password. One more try. Print your password:");
+                        password = ((Command) in.readObject()).getName();
                         if (db.login(email, SHA1Encoder.encryptPassword(password))) {
                             send("Successful login");
                         } else {
-                            send("Bad password. One more try. Print your password:");
-                            password = ((Command) in.readObject()).getName();
-                            if (db.login(email, SHA1Encoder.encryptPassword(password))) {
-                                send("Successful login");
-                            } else {
-                                send("Wrong password");
-                                send("stop");
-                                down();
-                            }
+                            send("Wrong password");
+                            send("stop");
+                            down();
                         }
                     }
-                    //TODO: переписать низ под комманды
-                    while (true) {
-                        email = in.readLine();
-                        if (email.equalsIgnoreCase("stop")) {
-                            this.down();
-                            break;
-                        }
-                        System.out.println("User said " + email);
-                        parser.parse(email);
-                    }
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                send("Naming problems");
+                CommandParser parser = new CommandParser(out, email);
+                //TODO: переписать низ под комманды
+                while (true) {
+                    Command cmd = (Command) in.readObject();
+                    if (cmd.getName().equalsIgnoreCase("stop")) {
+                        this.down();
+                        break;
+                    }
+                    parser.parse(cmd);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
 

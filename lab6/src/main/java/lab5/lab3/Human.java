@@ -10,6 +10,7 @@ public class Human implements Comparable<Human>, Serializable {
     private OffsetDateTime date = OffsetDateTime.now();
     private Place place = Place.SPAWN;
     private ArrayList<Item> carry = new ArrayList<>();
+    private String owner;
 
     public void speak() {
         System.out.println(this.getName() + " said something");
@@ -49,12 +50,13 @@ public class Human implements Comparable<Human>, Serializable {
         this.setCarry(carry);
     }
 
-    public Human(String name, int age, OffsetDateTime date, Place place, ArrayList<Item> carry) {
+    public Human(String name, int age, OffsetDateTime date, Place place, ArrayList<Item> carry, String owner) {
         this.setName(name);
         this.setAge(age);
         this.setDate(date);
         this.setPlace(place);
         this.setCarry(carry);
+        this.setOwner(owner);
     }
 
     public Integer getAge() {
@@ -94,6 +96,13 @@ public class Human implements Comparable<Human>, Serializable {
         this.date = date;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
     void addCarry(Item item) {
         carry.add(item);

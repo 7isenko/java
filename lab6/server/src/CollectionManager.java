@@ -1,5 +1,5 @@
-package lab5;
-
+import lab5.JSONReader;
+import lab5.JSONWriter;
 import lab5.lab3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,20 +14,10 @@ public class CollectionManager {
     private JSONReader reader = new JSONReader();
     private JSONWriter writer = new JSONWriter();
     private Date date = new Date();
+    private String email;
 
-    /**
-     * Auto method, loads elements from file on the start
-     */
-    public void setName(String name) {
-        reader.setFileAddress("./collections/"+ name +".json");
-    }
-    protected void setOnLoad() {
-        try {
-            System.out.println(reader.readFile());
-            collection = reader.getHumanCollection();
-        } catch (NullPointerException e) {
-            System.out.println("Collection is empty. It uses directory: " + reader.getFileAddress());
-        }
+    public CollectionManager(String email) {
+        this.email = email;
     }
 
     /**

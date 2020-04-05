@@ -1,6 +1,8 @@
 package lab5;
 
-public class Command {
+import java.io.Serializable;
+
+public class Command implements Serializable {
     private final String name;
     private final Object body;
 

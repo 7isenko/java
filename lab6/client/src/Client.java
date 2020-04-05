@@ -5,9 +5,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 //TODO: перенести парсинг команд на клиентскую сторону, стоит прийти к ObjectOutputStream/ObjectInputStream, не зря же сериализация существует
-//TODO: Команда import должна использовать файл из файловой системы клиента (содержимое файла передается на сервер), load и save - сервера.
 public class Client {
-    public static int PORT = 10357;
+    public static int PORT = 24220;
     public static String HOST = "localhost";
 
     public static void main(String[] args) {
