@@ -1,8 +1,10 @@
-import lab5.lab3.Human;
-import lab5.lab3.Item;
-import lab5.lab3.Place;
+package lab5;
 
-import java.util.*;
+import lab5.lab3.Human;
+
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
 /**
  * @author Semisenko Maxim
@@ -120,14 +122,4 @@ public class CollectionManager {
         this.collection = collection;
     }
 
-    /**
-     * Method, which is used for small tests
-     */
-    protected void test() {
-        ArrayList<Item> carry = new ArrayList<>();
-        carry.add(Item.values()[new Random().nextInt(Item.values().length)]);
-        ArrayList<Place> places = new ArrayList<>();
-        Place place = (Place.values()[new Random().nextInt(Place.values().length)]);
-        collection.add(new Human("Amanda", 26, place, carry));
-    }
 }
