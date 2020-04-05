@@ -12,7 +12,7 @@ public enum Item {
     ;
 
     private Item storage;
-    private Creature carrier;
+    private Human carrier;
     private ArrayList<Item> storing = new ArrayList<Item>();
 
 
@@ -26,7 +26,7 @@ public enum Item {
         System.out.println(this.toString() + " is in the " + item.toString());
     }
 
-    public void setCarrier(Creature carrier) {
+    public void setCarrier(Human carrier) {
         if (this.carrier != null) {
             this.carrier.removeCarry(this);
             for (Item i : this.storing) {
@@ -41,7 +41,7 @@ public enum Item {
     }
 }
 
-    Creature getCarrier() {
+    Human getCarrier() {
         return carrier;
     }
 

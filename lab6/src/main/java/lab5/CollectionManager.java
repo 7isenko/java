@@ -118,7 +118,7 @@ public class CollectionManager {
         StringBuffer answ = new StringBuffer();
         for (Human human : collection) {
             answ.append("Name: ").append(human.getName()).append("\nAge: ").append(human.getAge());
-            if (human.getPlaces().size() != 0) answ.append("\nPlace: ").append(human.getPlaces());
+            if (human.getPlace() != null) answ.append("\nPlace: ").append(human.getPlace());
             if (human.getCarry().size() != 0) answ.append("\nCarry: ").append(human.getCarry());
             answ.append("\n_________\n");
         }
@@ -153,7 +153,7 @@ public class CollectionManager {
         ArrayList<Item> carry = new ArrayList<>();
         carry.add(Item.values()[new Random().nextInt(Item.values().length)]);
         ArrayList<Place> places = new ArrayList<>();
-        places.add(Place.values()[new Random().nextInt(Place.values().length)]);
-        collection.add(new Human("Amanda", 26, places, carry));
+        Place place = (Place.values()[new Random().nextInt(Place.values().length)]);
+        collection.add(new Human("Amanda", 26, place, carry));
     }
 }

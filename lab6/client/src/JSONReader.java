@@ -1,5 +1,3 @@
-package lab5;
-
 import lab5.lab3.Human;
 import lab5.lab3.Item;
 import lab5.lab3.Place;
@@ -7,8 +5,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -55,7 +55,7 @@ public class JSONReader {
         return collection;
     }
 
-    public Human parseHuman(JSONObject jsonHuman) {
+    public static Human parseHuman(JSONObject jsonHuman) {
         Human human = new Human();
 
         try {
@@ -64,7 +64,7 @@ public class JSONReader {
             try {
                 human.setPlace((Place) jsonHuman.get("place"));
             } catch (JSONException e) {
-                human.setPlace(Place.SPAWN);
+                human.setPlace(Place.SPAWN); 
             }
             try {
                 human.setCarry(jsonToALIConvert((JSONArray) jsonHuman.get("carry")));
@@ -82,7 +82,7 @@ public class JSONReader {
         return human;
     }
 
-    public ArrayList<Item> jsonToALIConvert(JSONArray jsonArray) {
+    public static ArrayList<Item> jsonToALIConvert(JSONArray jsonArray) {
         ArrayList<Item> arrayList = new ArrayList<Item>();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {

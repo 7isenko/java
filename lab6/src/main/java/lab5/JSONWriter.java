@@ -19,7 +19,7 @@ public class JSONWriter {
         JSONObject human = new JSONObject();
         human.put("name", h.getName());
         human.put("age", h.getAge());
-        human.put("skills", h.getPlaces());
+        human.put("skills", h.getPlace());
         human.put("carry", h.getCarry());
 
         humanList.put(human);

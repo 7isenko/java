@@ -6,5 +6,6 @@ public enum Place {
     ZOO,
     YARD,
     GRAVEYARD,
-    STAGE
+    STAGE,
+    SPAWN
 }

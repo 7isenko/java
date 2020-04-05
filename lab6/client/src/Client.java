@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.io.*;
 
 //TODO: перенести парсинг команд на клиентскую сторону, стоит прийти к ObjectOutputStream/ObjectInputStream, не зря же сериализация существует
 //TODO: Команда import должна использовать файл из файловой системы клиента (содержимое файла передается на сервер), load и save - сервера.
@@ -17,8 +19,7 @@ class ClientConnector {
     private Socket socket;
     private BufferedReader reader; // Listen to user
     private BufferedReader in; // Listen to server
-    private PrintWriter out;
-    private String name;
+    private ObjectOutputStream out;
 
     public ClientConnector(String HOST, int PORT) {
         try {
@@ -32,8 +33,7 @@ class ClientConnector {
             assert socket != null;
             reader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-            // smth starting
+            out = new ObjectOutputStream((socket.getOutputStream()));
             new CommandWriter().start();
             new CommandReader().start();
         } catch (IOException e) {
@@ -46,25 +46,18 @@ class ClientConnector {
 
 
     class CommandWriter extends Thread {
+        ClientManager cm = new ClientManager(out);
         @Override
         public void run() {
-            try {
-                System.out.println("Enter your nickname:");
-                name = reader.readLine();
-                out.write(name + "\n");
-            } catch (IOException e) {
-                System.out.println("Hey dude nice nick \n(It caused exception)");
-            }
             while (true) {
                 String userWord;
                 try {
                     userWord = reader.readLine(); // сообщения с консоли
                     if (userWord.equals("stop")) {
-                        out.write("stop" + "\n");
                         System.out.println("Program stopped");
                         break; // выходим из цикла если пришло "stop"
                     } else {
-                        out.write(userWord + "\n"); // отправляем на сервер
+                        cm.sendCommand(userWord);
                     }
                     out.flush(); // чистим
                 } catch (IOException e) {
@@ -73,7 +66,6 @@ class ClientConnector {
 
             }
         }
-
     }
 
     class CommandReader extends Thread {
