@@ -30,7 +30,11 @@ public class MailSender {
                     InternetAddress.parse(email));
             message.setSubject("Password for lab!!!");
             message.setText("There is your password: " + pswd);
-            Transport.send(message);
+            try{
+                Transport.send(message); }
+            catch (SendFailedException e) {
+                System.out.println("But this email is does not exist");
+            }
             System.out.println("Sent message successfully! user's password is " + pswd);
 
         } catch (MessagingException e) {

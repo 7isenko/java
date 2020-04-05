@@ -71,19 +71,29 @@ public class DBRepository {
             return false;
         }
     }
+
     public ArrayList<Human> getHumansByUser(String email) {
         ArrayList<Human> humans = new ArrayList<>();
         try {
             String sql = "select * from humanlist where owner like '" + email + "'";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while (rs.next()){
+            while (rs.next()) {
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
                 OffsetDateTime date = OffsetDateTime.parse(rs.getString("date"));
                 Place place = Place.valueOf(rs.getString("place"));
-                ArrayList<Item> carry = (ArrayList<Item>) rs.getArray("carry");
-                humans.add(new Human(name,age,date,place,carry,email));
+
+                ArrayList<Item> carry = new ArrayList<>();
+                String rawArray = rs.getString("carry");
+                String[] rawCarry = rawArray.substring(1, rawArray.length() - 1).split(",");
+                if (!rawCarry[0].equals(""))
+                    for (String item :
+                            rawCarry) {
+                        carry.add(Item.valueOf(item.trim()));
+                    }
+
+                humans.add(new Human(name, age, date, place, carry, email));
             }
             return humans;
         } catch (SQLException e) {
@@ -98,14 +108,23 @@ public class DBRepository {
             String sql = "select * from humanlist";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while (rs.next()){
+            while (rs.next()) {
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
                 OffsetDateTime date = OffsetDateTime.parse(rs.getString("date"));
                 Place place = Place.valueOf(rs.getString("place"));
-                ArrayList<Item> carry = (ArrayList<Item>) rs.getArray("carry");
+
+                ArrayList<Item> carry = new ArrayList<>();
+                String rawArray = rs.getString("carry");
+                String[] rawCarry = rawArray.substring(1, rawArray.length() - 1).split(",");
+                if (!rawCarry[0].equals(""))
+                    for (String item :
+                            rawCarry) {
+                        carry.add(Item.valueOf(item.trim()));
+                    }
+
                 String owner = rs.getString("owner");
-                humans.add(new Human(name,age,date,place,carry, owner));
+                humans.add(new Human(name, age, date, place, carry, owner));
             }
             return humans;
         } catch (SQLException e) {
@@ -131,6 +150,19 @@ public class DBRepository {
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean removeAllHumans(String owner) {
+        try {
+            String sql = "delete from humanlist where owner=?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, owner);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

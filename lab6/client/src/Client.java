@@ -54,7 +54,8 @@ class ClientConnector {
                     userWord = reader.readLine(); // сообщения с консоли
                     if (userWord.equals("stop")) {
                         System.out.println("Program stopped");
-                        break; // выходим из цикла если пришло "stop"
+                        ClientConnector.this.stop();
+                        break;
                     } else {
                         cm.sendCommand(userWord);
                     }
@@ -73,10 +74,10 @@ class ClientConnector {
             String str;
             try {
                 while (true) {
-                    str = in.readLine(); // ждем сообщения с сервера
+                    str = in.readLine(); // сообщения с сервера
                     if (str.equals("stop")) {
                         ClientConnector.this.stop();
-                        break; // выходим из цикла если пришло "stop"
+                        break;
                     }
                     System.out.println(str);
                 }
@@ -91,6 +92,7 @@ class ClientConnector {
             if (!socket.isClosed()) {
                 System.out.println("Client closed");
                 socket.close();
+                reader.close();
                 in.close();
                 out.close();
             }

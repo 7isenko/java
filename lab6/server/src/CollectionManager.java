@@ -1,8 +1,6 @@
-import lab5.JSONReader;
-import lab5.JSONWriter;
-import lab5.lab3.*;
-import org.json.JSONException;
-import org.json.JSONObject;
+import lab5.lab3.Human;
+import lab5.lab3.Item;
+import lab5.lab3.Place;
 
 import java.util.*;
 
@@ -11,35 +9,34 @@ import java.util.*;
  */
 public class CollectionManager {
     private TreeSet<Human> collection = new TreeSet<Human>();
-    private JSONReader reader = new JSONReader();
-    private JSONWriter writer = new JSONWriter();
+    private DBRepository db = new DBRepository();
     private Date date = new Date();
     private String email;
 
     public CollectionManager(String email) {
         this.email = email;
+        load();
     }
 
     /**
-     * Update collection from file
+     * Fill the collection with all elements
+     */
+    public String loadAll() {
+        collection.addAll(db.getAllHumans());
+        return "Collection is updated with humans by all users";
+    }
+    /**
+     * Fill the collection with your elements
      */
     public String load() {
-        reader.readFile();
-        return "Collection was updated from your file";
-    }
-
-    /**
-     * Save collection to file
-     */
-    public String save() {
-        writer.fill(collection);
-        writer.writeToFile();
-        return "Collection has been saved to " + writer.getFileAddress();
+        collection = new TreeSet<>();
+        collection.addAll(db.getHumansByUser(email));
+        return "Collection is updated with your humans";
     }
 
     /**
      * Print an information about collection
-     * (type, initialization date, number of elements, etc.)
+     * (type, last initialization date, number of elements)
      */
     public String info() {
         return date.toString() +
@@ -50,52 +47,37 @@ public class CollectionManager {
     /**
      * Add an element into collection
      *
-     * @param objInString - element in string JSON format
+     * @param human - element to add
      */
-    public String add(String objInString) {
-        JSONObject obj;
-        try {
-            obj = new JSONObject(objInString);
-            if (collection.add(reader.parseHuman(obj)))
-                return "You added an object to your collection. Print \"show\" to check it";
-        } catch (JSONException e) {
-            return "That was invalid JSON";
-        } catch (NullPointerException e) {
-            return "example: {\"name\":\"Bill\",\"age\":\"42\",\"place\":[\"zoo\"],\"carry\":[\"stick\"]}";
+    public String add(Human human) {
+
+        if (human!=null && collection.add(human)) {
+            db.addHuman(human, email);
+            load();
+            return "You added an object to your collection. Print \"show\" to check it";
+        } else return "I can't add it";
+    }
+
+    protected String add(TreeSet<Human> humans) {
+
+        if (collection.addAll(humans)) {
+            db.addHumans(humans, email);
+            load();
+            return "Your object were added";
         }
         return "Unknown trouble in add method";
     }
 
     /**
-     * Imports collection from file
-     *
-     * @param path - string path to a file
-     */
-    public String doImport(String path) {
-        if (!path.substring(path.lastIndexOf('.') + 1).equals("json"))
-            return "It is not .json format file";
-        else
-            try {
-                reader.setFileAddress(path);
-                reader.getHumanCollection();
-                return "Collection was successfully imported. Print \"show\" to check it";
-            } catch (NullPointerException e) {
-                return "Wrong file address: " + path;
-            }
-    }
-
-    /**
      * Removes object from collection
      *
-     * @param objInString - element in string JSON format
+     * @param human - element to remove
      */
-    public String remove(String objInString) {
+    public String remove(Human human) {
         try {
-            JSONObject obj = new JSONObject(objInString);
-            collection.remove(reader.parseHuman(obj)); // check return
+            collection.remove(human);
+            db.removeHuman(human, email);
             return "You removed an object from collection. Print \"show\" to check it";
-        } catch (JSONException e) {
-            return "It is not a JSON";
         } catch (NullPointerException e) {
             return "example: {\"name\":\"Bill\",\"age\":\"42\",\"skills\":[\"fun\"],\"carry\":[\"stick\"]}";
         }
@@ -110,6 +92,7 @@ public class CollectionManager {
             answ.append("Name: ").append(human.getName()).append("\nAge: ").append(human.getAge());
             if (human.getPlace() != null) answ.append("\nPlace: ").append(human.getPlace());
             if (human.getCarry().size() != 0) answ.append("\nCarry: ").append(human.getCarry());
+            answ.append("\nOwner: ").append(human.getOwner());
             answ.append("\n_________\n");
         }
         try {
@@ -125,6 +108,7 @@ public class CollectionManager {
      */
     public String clear() {
         collection = new TreeSet<>();
+        db.removeAllHumans(email);
         return "Collection has been nullified";
     }
 

@@ -1,5 +1,6 @@
 import lab5.Command;
 import lab5.lab3.Human;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class ClientManager {
     public void sendCommand(String cmd) {
         Command command;
         String[] buff;
-        buff = cmd.split(" ", 2);
+        buff = cmd.trim().split(" ", 2);
         String head = buff[0];
         if (head.equals("import") || head.equalsIgnoreCase("doImport")) {
             if (buff.length == 1) {
@@ -32,9 +33,13 @@ public class ClientManager {
             return;
         }
         if (buff.length == 2) {
-            command = new Command(head, JSONReader.parseHuman(new JSONObject(buff[1])));
-            send(command);
-            return;
+            try {
+                command = new Command(head, JSONReader.parseHuman(new JSONObject(buff[1])));
+                send(command);
+                return;
+            } catch (JSONException e) {
+                System.out.println("Bad JSON format");
+            }
         }
         System.out.println("Please write it correctly");
     }
