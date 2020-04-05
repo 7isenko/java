@@ -92,7 +92,7 @@ public class CollectionManager {
             answ.append("Name: ").append(human.getName()).append("\nAge: ").append(human.getAge());
             if (human.getPlace() != null) answ.append("\nPlace: ").append(human.getPlace());
             if (human.getCarry().size() != 0) answ.append("\nCarry: ").append(human.getCarry());
-            answ.append("\nOwner: ").append(human.getOwner());
+            answ.append("\nOwner: ").append(human.getOwner()).append("\nCreated: ").append(human.getDate().toLocalDateTime().toString().replace("T"," ").substring(0,19));
             answ.append("\n_________\n");
         }
         try {

@@ -64,7 +64,7 @@ public class CommandParser {
     }
 
     public void showMenu() {
-        send("Enter load, loadAll, info, save, add {element}, import {path}, remove {element}, clear or \"stop\" to exit \nelement - json, example: {\"name\":\"Bill\",\"age\":\"42\",\"place\":\"zoo\",\"carry\":[\"stick\"]} \npath - string, example: ./collections/students.json");
+        send("Enter show, load, loadAll, info, add {element}, import {path}, remove {element}, clear or \"stop\" to exit \nelement - json, example: {\"name\":\"Bill\",\"age\":\"42\",\"place\":\"zoo\",\"carry\":[\"stick\"]} \npath - string, example: ./collections/students.json");
         send("List of able places: " + Arrays.toString(Place.values()));
         send("List of able items: " + Arrays.toString(Item.values()));
         send("Name and age are required!");

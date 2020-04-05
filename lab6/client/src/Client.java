@@ -21,15 +21,18 @@ class ClientConnector {
     private ObjectOutputStream out;
 
     public ClientConnector(String HOST, int PORT) {
-        try {
-            this.socket = new Socket(HOST, PORT);
-        } catch (IOException e) {
-            System.out.println("OMG, A PROBLEM");
-            e.printStackTrace();
+        while (true) {
+            try {
+                Thread.sleep(1000);
+                this.socket = new Socket(HOST, PORT);
+                System.out.println("Connected to a server");
+                break;
+            } catch (IOException | InterruptedException e) {
+                System.out.println("Waiting for host");
+            }
         }
 
         try {
-            assert socket != null;
             reader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new ObjectOutputStream((socket.getOutputStream()));
@@ -59,7 +62,7 @@ class ClientConnector {
                     } else {
                         cm.sendCommand(userWord);
                     }
-                    out.flush(); // чистим
+                    out.flush();
                 } catch (IOException e) {
                     ClientConnector.this.stop();
                 }
