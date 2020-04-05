@@ -8,7 +8,7 @@ public class MailSender {
     private static String host = "smtp.mail.ru";
     private static String username = "it_is_smtp_baby@mail.ru";
     private static String password = "itmoisbest123123";
-    private static int smtp_port = 25; // 465
+    private static int smtp_port = 465; // 465 / 25
 
     public static void sendPassword(String email, String pswd) {
         Properties props = new Properties();

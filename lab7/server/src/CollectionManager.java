@@ -1,5 +1,3 @@
-package lab5;
-
 import lab5.lab3.Human;
 
 import java.util.Date;

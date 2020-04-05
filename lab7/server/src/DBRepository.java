@@ -13,6 +13,7 @@ public class DBRepository {
     static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
     static final String USER = "postgres";
     static final String PASS = "zxcv";
+    // данных для входа на хелиос тут не будет >:D
 
     public DBRepository() {
         start();
@@ -38,7 +39,8 @@ public class DBRepository {
         String encodedPassword = generated[1];
         try {
             addUser(email, encodedPassword);
-            MailSender.sendPassword(email, password);
+            //MailSender.sendPassword(email, password);
+            System.out.println("password is " + password);
             return true;
         } catch (Exception e) {
             return false;

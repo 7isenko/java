@@ -46,17 +46,9 @@ public class Server {
         public void run() {
             try {
                 String email;
-                while (true) {
-                    send("Print your email:");
-                    email = ((Command) in.readObject()).getName();
-                    try {
-                        InternetAddress emailAddr = new InternetAddress(email);
-                        emailAddr.validate();
-                        break;
-                    } catch (Exception ex) {
-                        send("Bad email");
-                    }
-                }
+                send("Print your email:");
+                email = ((Command) in.readObject()).getName();
+
 
                 if (db.login(email, "empty")) {
                     send("You were registered and logged in. Password has been sent to your email");

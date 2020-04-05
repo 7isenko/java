@@ -63,7 +63,7 @@ public class JSONReader {
             human.setAge(jsonHuman.getInt("age"));
             try {
                 human.setPlace(Place.valueOf(((String)jsonHuman.get("place")).toUpperCase()));
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 human.setPlace(Place.SPAWN); 
             }
             try {

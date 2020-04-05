@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-//TODO: перенести парсинг команд на клиентскую сторону, стоит прийти к ObjectOutputStream/ObjectInputStream, не зря же сериализация существует
 public class Client {
     public static int PORT = 24220;
     public static String HOST = "localhost";
